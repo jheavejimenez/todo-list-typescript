@@ -3,7 +3,47 @@
  * When you're ready to start on your site, clear the file. Happy hacking!
  **/
 
-const list = document.querySelector('#list');
+type Task = {
+    id: string,
+    title: string,
+    completed: boolean,
+    createdAt: Date
+}
+
+const list = document.querySelector<HTMLDListElement>('#list');
+const form = document.querySelector<HTMLFormElement>('#form');
+const add = document.querySelector<HTMLInputElement>('#input-new-task-title');
+
+form?.addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    if(add?.value == '' || add?.value == null) return;
+
+    const task: Task = {
+        id: uid2(),
+        title: add.value,
+        completed: false,
+        createdAt: new Date()
+    };
+    addListItem(task);
+});
+
+function addListItem(task: Task) {
+    const item = document.createElement('li');
+    const checkbox = document.createElement('input');
+
+    item.classList.add('list-item');
+    item.setAttribute('data-id', task.id);
+    item.innerHTML = `
+        <input type="checkbox" class="checkbox" ${task.completed ? 'checked' : ''}>
+        <span class="title">${task.title}</span>
+    `;
+    list?.appendChild(item);
+    checkbox.checked = task.completed;
+
+}
+
+
 
 /**
  * below is for experimenting with generating a unique id
