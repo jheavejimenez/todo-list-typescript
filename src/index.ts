@@ -76,6 +76,9 @@ const uid2 = () =>
     ).replace(/\./g, '')
 
 // @ts-ignore
+/**
+ * Gemerate a unique id using recursive method
+ */
 const generateId = (n = 1) => {
     n -= 1
     return Math.random().toString(36).substring(2)
