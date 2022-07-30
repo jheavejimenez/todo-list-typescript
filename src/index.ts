@@ -2,6 +2,7 @@
  * This file is just a silly example to show everything working in the browser.
  * When you're ready to start on your site, clear the file. Happy hacking!
  **/
+import { nanoid } from 'nanoid'
 
 type Task = {
     id: string,
@@ -26,21 +27,20 @@ form?.addEventListener('submit', (e) => {
         createdAt: new Date()
     };
     addListItem(task);
+    add.value = '';
 });
 
-function addListItem(task: Task) {
+function addListItem(task: Task): void {
     const item = document.createElement('li');
-    const checkbox = document.createElement('input');
+
+    console.log(item.querySelector('#ch'));
 
     item.classList.add('list-item');
-    item.setAttribute('data-id', task.id);
     item.innerHTML = `
-        <input type="checkbox" class="checkbox" ${task.completed ? 'checked' : ''}>
+        <input type="checkbox"  id="ch">
         <span class="title">${task.title}</span>
     `;
     list?.appendChild(item);
-    checkbox.checked = task.completed;
-
 }
 
 
@@ -64,18 +64,24 @@ const uid2 = () =>
         Date.now().toString(36).substring(2, 8) + Math.random().toString(16).substring(2, 10)
     ).replace(/\./g, '')
 
+// @ts-ignore
+const generateId = (n = 1) => {
+    n -= 1
+    return Math.random().toString(36).substring(2)
+        + (n > 0 ? generateId(n) : "")
+}
+
 /**
  * for testing if the id is unique
  **/
 
-const size = 1000000
+const size = 100000000
 const set = new Set(new Array(size)
     .fill(0)
-    .map(() => shuffle(uid2())))
+    .map(() => generateId()))
 
-// console.log(
-//     size === set.size ? 'all ids are unique' : `not unique records ${size - set.size}`
-// )
-// console.log("the length of uid is", shuffle(uid2()).length)
-// console.log(shuffle(uid2()))
+console.log(
+    size === set.size ? 'all ids are unique' : `not unique records ${size - set.size}`
+)
+console.log("size", set.size)
 // console.log(Date.now().toString(36).substring(2, 10))
